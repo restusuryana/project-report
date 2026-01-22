@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\Models\RegPosyandu;
 use Illuminate\Routing\Controller;
 
 class LoginController extends Controller

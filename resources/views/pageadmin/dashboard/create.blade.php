@@ -1,108 +1,114 @@
 @extends('template-admin.layout')
 
 @section('content')
-    <div class="page-wrapper">
-        <div class="page-content">
-            <!--breadcrumb-->
-            <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-                <div class="breadcrumb-title pe-3">Forms</div>
-                <div class="ps-3">
-                    <nav aria-label="breadcrumb">
-                        <ol class="breadcrumb mb-0 p-0">
-                            <li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a></li>
-                            <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
-                            <li class="breadcrumb-item active" aria-current="page">Tambah Barang</li>
-                        </ol>
-                    </nav>
-                </div>
-            </div>
-            <!--breadcrumb-->
+<div class="container-fluid">
 
-            <div class="row">
-                <div class="col-xl-7 mx-auto">
-                    <hr />
-                    <div class="card border-top border-0 border-4 border-primary">
-                        <div class="card-body p-5">
-                            <div class="card-title d-flex align-items-center">
-                                <div><i class="bx bx-plus-circle me-1 font-22 text-primary"></i></div>
-                                <h5 class="mb-0 text-primary">Tambah Barang</h5>
-                            </div>
-                            <hr>
-                            <form action="{{ route('admin.dashboard.store') }}" method="POST" class="row g-3" enctype="multipart/form-data">
-                                @csrf
+    {{-- HEADER --}}
+    <div class="mb-4">
+        <h4 class="fw-bold mb-0">Tambah Data Barang</h4>
+        <small class="text-muted">Input data penyusunan barang</small>
+    </div>
 
-                                <div class="col-md-12">
-                                    <label for="no_barang" class="form-label">No Barang</label>
-                                    <input type="text" class="form-control" id="no_barang" name="no_barang" required>
-                                    <small class="text-danger">
-                                        @foreach ($errors->get('no_barang') as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </small>
-                                </div>
+    <div class="row justify-content-center">
+        <div class="col-xl-8">
 
-                                <div class="col-md-12">
-                                    <label for="line_code" class="form-label">Line Code</label>
-                                    <input type="text" class="form-control" id="line_code" name="line_code" required>
-                                    <small class="text-danger">
-                                        @foreach ($errors->get('line_code') as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </small>
-                                </div>
+            <div class="card">
+                <div class="card-body p-4">
 
-                                <div class="col-md-12">
-                                    <label for="chargis_from" class="form-label">Chargis From</label>
-                                    <input type="text" class="form-control" id="chargis_from" name="chargis_from" required>
-                                    <small class="text-danger">
-                                        @foreach ($errors->get('chargis_from') as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </small>
-                                </div>
+                    <form action="{{ route('admin.dashboard.store') }}"
+                          method="POST"
+                          class="row g-4">
+                        @csrf
 
-                                <div class="col-md-12">
-                                    <label for="chargis_to" class="form-label">Chargis To</label>
-                                    <input type="text" class="form-control" id="chargis_to" name="chargis_to" required>
-                                    <small class="text-danger">
-                                        @foreach ($errors->get('chargis_to') as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </small>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="shift" class="form-label">Shift</label>
-                                    <select class="form-control" id="shift" name="shift" required>
-                                        <option value="1">1</option>
-                                        <option value="2">2</option>
-                                        <option value="3">3</option>
-                                    </select>
-                                    <small class="text-danger">
-                                        @foreach ($errors->get('shift') as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </small>
-                                </div>
-
-                                <div class="col-md-12">
-                                    <label for="info" class="form-label">Info</label>
-                                    <textarea class="form-control" id="info" name="info"></textarea>
-                                    <small class="text-danger">
-                                        @foreach ($errors->get('info') as $error)
-                                            <li>{{ $error }}</li>
-                                        @endforeach
-                                    </small>
-                                </div>
-
-                                <div class="col-12 mt-3 d-flex justify-content-end">
-                                    <button type="submit" class="btn btn-primary px-5">Simpan</button>
-                                </div>
-                            </form>
+                        {{-- NO BARANG --}}
+                        <div class="col-md-6">
+                            <label class="form-label">No Barang</label>
+                            <input type="text"
+                                   class="form-control @error('no_barang') is-invalid @enderror"
+                                   name="no_barang"
+                                   value="{{ old('no_barang') }}"
+                                   placeholder="Contoh: BRG-001">
+                            @error('no_barang')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
-                    </div>
+
+                        {{-- LINE CODE --}}
+                        <div class="col-md-6">
+                            <label class="form-label">Line Code</label>
+                            <input type="text"
+                                   class="form-control @error('line_code') is-invalid @enderror"
+                                   name="line_code"
+                                   value="{{ old('line_code') }}"
+                                   placeholder="Contoh: LINE-A">
+                            @error('line_code')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- CHARGIS FROM --}}
+                        <div class="col-md-6">
+                            <label class="form-label">Chargis From</label>
+                            <input type="number"
+                                   class="form-control @error('chargis_from') is-invalid @enderror"
+                                   name="chargis_from"
+                                   value="{{ old('chargis_from') }}">
+                            @error('chargis_from')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- CHARGIS TO --}}
+                        <div class="col-md-6">
+                            <label class="form-label">Chargis To</label>
+                            <input type="number"
+                                   class="form-control @error('chargis_to') is-invalid @enderror"
+                                   name="chargis_to"
+                                   value="{{ old('chargis_to') }}">
+                            @error('chargis_to')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- SHIFT --}}
+                        <div class="col-md-6">
+                            <label class="form-label">Shift (Otomatis)</label>
+                            <input type="text"
+                                   class="form-control"
+                                   value="{{ \App\Helpers\ShiftHelper::getShift() }}"
+                                   readonly>
+                        </div>
+
+                        {{-- INFO --}}
+                        <div class="col-md-12">
+                            <label class="form-label">Keterangan</label>
+                            <textarea class="form-control @error('info') is-invalid @enderror"
+                                      name="info"
+                                      rows="3"
+                                      placeholder="Catatan tambahan (opsional)">{{ old('info') }}</textarea>
+                            @error('info')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
+                        </div>
+
+                        {{-- ACTION --}}
+                        <div class="col-12 d-flex justify-content-end gap-2 mt-3">
+                            <a href="{{ route('admin.dashboard') }}"
+                               class="btn btn-light px-4">
+                                Batal
+                            </a>
+                            <button type="submit"
+                                    class="btn btn-primary px-5">
+                                Simpan Data
+                            </button>
+                        </div>
+
+                    </form>
+
                 </div>
             </div>
+
         </div>
     </div>
+</div>
 @endsection

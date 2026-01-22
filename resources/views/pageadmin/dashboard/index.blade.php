@@ -1,172 +1,138 @@
 @extends('template-admin.layout')
 
 @section('content')
-    <div class="page-wrapper">
-        <div class="page-content">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-                <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-info">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <h4 class="my-1 text-info">Shift 1</h4>
-                                    <h4 class="my-1 text-info">{{ $totalshift1 }}</h4>
-                                </div>
-                                <div class="widgets-icons-2 rounded-circle bg-gradient-scooter text-white ms-auto">
-                                    <i class='bx bx-package'></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-danger">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <h4 class="my-1 text-info">Shift 2</h4>
-                                    <h4 class="my-1 text-info">{{ $totalshift2 }}</h4>
-                                </div>
-                                <div class="widgets-icons-2 rounded-circle bg-gradient-bloody text-white ms-auto">
-                                    <i class='bx bx-package'></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-success">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <h4 class="my-1 text-info">Shift 3</h4>
-                                    <h4 class="my-1 text-info">{{ $totalshift3 }}</h4>
-                                </div>
-                                <div class="widgets-icons-2 rounded-circle bg-gradient-ohhappiness text-white ms-auto">
-                                    <i class='bx bx-package'></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-warning">
-                        <div class="card-body">
-                            <div class="d-flex align-items-center">
-                                <div>
-                                    <h4 class="my-1 text-info">Total</h4>
-                                    <h4 class="my-1 text-info">{{ $totalAll }}</h4>
-                                </div>
-                                <div class="widgets-icons-2 rounded-circle bg-gradient-blooker text-white ms-auto">
-                                    <i class='bx bx-package'></i>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!--end row-->
+<div class="container-fluid">
 
-            <div class="row">
-                <div class="col-12 col-lg-12">
-                    <div class="card radius-10">
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <a href="{{ route('admin.dashboard.create') }}" class="btn btn-primary">Tambah Data</a>
-                               
-                            </div>
-                            <div class="table-responsive">
-                                <table id="example2" class="table table-striped table-bordered">
-                                    <thead>
-                                        <tr>
-                                            <th>NO</th>
-                                            <th>NO BARANG</th>
-                                            <th>LINE CODE</th>
-                                            <th>CHARGIS</th>
-                                            <th>SHIFT</th>
-                                            <th>INFO</th>
-                                            @if (auth()->user()->role === 'admin')
-                                                <th>Aksi</th>
-                                            @endif
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($getbarang as $index => $b)
-                                            <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $b->no_barang }}</td>
-                                                <td>{{ $b->line_code }}</td>
-                                                <td>{{ $b->chargis_from }} S/d {{ $b->chargis_to }}</td>
-                                                <td>{{ $b->shift }}</td>
-                                                <td>{{ $b->info }}</td>
-                                                @if (auth()->user()->role === 'admin')
-                                                    <td>
-                                                        <a href="{{ route('admin.dashboard.edit', $b->id) }}"
-                                                            class="btn btn-sm btn-warning">Edit</a>
-                                                        <form action="{{ route('admin.dashboard.destroy', $b->id) }}"
-                                                            method="POST" style="display:inline;" class="delete-form">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit"
-                                                                class="btn btn-sm btn-danger">Hapus</button>
-                                                        </form>
-                                                    </td>
-                                                @endif
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                            
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div><!--end row-->
+    {{-- HEADER --}}
+    <div class="mb-4">
+        <h4 class="fw-bold mb-0">Dashboard Penyusunan</h4>
+        <small class="text-muted">Monitoring data penyusunan per shift</small>
+    </div>
+
+    {{-- STAT --}}
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card p-3">
+                <small class="text-muted">Shift 1</small>
+                <h3 class="fw-bold text-primary">{{ $totalshift1 }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <small class="text-muted">Shift 2</small>
+                <h3 class="fw-bold text-success">{{ $totalshift2 }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <small class="text-muted">Shift 3</small>
+                <h3 class="fw-bold text-warning">{{ $totalshift3 }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 bg-dark text-white">
+                <small>Total Susun (Chargis)</small>
+                <h3 class="fw-bold text-white">{{ $totalAll }}</h3>
+            </div>
         </div>
     </div>
-@endsection
 
+    {{-- CHART + TABLE --}}
+    <div class="row g-4">
+
+        {{-- CHART --}}
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header fw-semibold">Grafik Penyusunan Per Shift</div>
+                <div class="card-body">
+                    <canvas id="shiftChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        {{-- DATA TERBARU --}}
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span class="fw-semibold">Data Terbaru</span>
+                    <a href="{{ route('admin.dashboard.create') }}" class="btn btn-sm btn-primary">
+                        + Tambah Data
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>No</th>
+                                <th>No Barang</th>
+                                <th>Line</th>
+                                <th>Chargis</th>
+                                <th>Shift</th>
+                                <th width="120">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($getbarang->take(5) as $item)
+                            <tr>
+                                <td>{{ $loop->iteration }}</td>
+                                <td>{{ $item->no_barang }}</td>
+                                <td>{{ $item->line_code }}</td>
+                                <td>{{ $item->chargis_from }} - {{ $item->chargis_to }}</td>
+                                <td><span class="badge bg-secondary">{{ $item->shift }}</span></td>
+                                <td>
+                                    <a href="{{ route('admin.dashboard.edit',$item->id) }}" class="btn btn-sm btn-warning">Edit</a>
+                                    <form action="{{ route('admin.dashboard.destroy',$item->id) }}" method="POST" class="d-inline">
+                                        @csrf @method('DELETE')
+                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus data?')">Hapus</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 @section('script')
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Delete confirmation
-            document.querySelectorAll('.delete-form').forEach(form => {
-                form.addEventListener('submit', function(e) {
-                    e.preventDefault();
 
-                    Swal.fire({
-                        title: 'Apakah Anda yakin?',
-                        text: "Data ini akan dihapus secara permanen!",
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ya, hapus!',
-                        cancelButtonText: 'Batal'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-                });
-            });
-
-            // Shift filter
-            const shiftFilter = document.getElementById('shiftFilter');
-            const rows = document.querySelectorAll('.shift-row');
-
-            shiftFilter.addEventListener('change', function() {
-                const selectedShift = this.value;
-
-                rows.forEach(row => {
-                    const rowShift = row.getAttribute('data-shift');
-                    if (selectedShift === '' || selectedShift === rowShift) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
+<script>
+    const ctx = document.getElementById('shiftChart').getContext('2d');
+    const shiftChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Shift 1', 'Shift 2', 'Shift 3'],
+            datasets: [{
+                label: 'Jumlah Produksi',
+                data: [{{ $totalshift1 }}, {{ $totalshift2 }}, {{ $totalshift3 }}],
+                backgroundColor: [
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(255, 206, 86, 0.7)'
+                ],
+                borderColor: [
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(255, 206, 86, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        stepSize: 0
                     }
-                });
-            });
-        });
-    </script>
+                }
+            }
+        }
+    });
+</script>
 @endsection
+
+@endsection
+

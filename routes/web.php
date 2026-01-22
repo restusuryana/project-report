@@ -21,7 +21,7 @@ use App\Http\Controllers\{
 
 Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::middleware(['auth', 'role:admin,user'])->group(function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');

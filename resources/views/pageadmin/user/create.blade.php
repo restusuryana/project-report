@@ -82,7 +82,7 @@
                                     class="form-select @error('role') is-invalid @enderror">
                                 <option value="">-- Pilih Role --</option>
                                 <option value="admin" {{ old('role')=='admin'?'selected':'' }}>Admin</option>
-                                <option value="user" {{ old('role')=='user'?'selected':'' }}>User</option>
+                                <option value="operator" {{ old('role')=='operator'?'selected':'' }}>Operator</option>
                             </select>
                             @error('role')
                                 <div class="invalid-feedback">{{ $message }}</div>

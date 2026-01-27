@@ -11,9 +11,19 @@
         </a>
     </li>
 
+    {{-- Kelola Akun Pribadi--}}
+    <li class="menu-label">MANAGEMENT</li>
+    <li class="{{ request()->is('profile') ? 'mm-active' : '' }}">
+        <a href="/profile">
+            <div class="parent-icon">
+                <i class='bx bx-cog'></i>
+            </div>
+            <div class="menu-title">Profile Saya</div>
+        </a>
+    </li>
+
     {{-- ADMIN ONLY --}}
     @if(auth()->user()->role === 'admin')
-        <li class="menu-label">MANAGEMENT</li>
 
         <li class="{{ request()->is('users*') ? 'mm-active' : '' }}">
             <a href="/users">
@@ -24,5 +34,7 @@
             </a>
         </li>
     @endif
+
+
 
 </ul>

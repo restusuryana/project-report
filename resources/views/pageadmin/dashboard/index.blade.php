@@ -37,6 +37,45 @@
         </div>
     </div>
 
+    <form method="GET" action="{{ route('admin.dashboard') }}" class="row g-3 mb-4">
+
+        <div class="col-md-4">
+            <label class="form-label">Tanggal Mulai</label>
+            <input type="date"
+                name="start_date"
+                class="form-control"
+                value="{{ request('start_date') }}">
+        </div>
+
+        <div class="col-md-4">
+            <label class="form-label">Tanggal Akhir</label>
+            <input type="date"
+                name="end_date"
+                class="form-control"
+                value="{{ request('end_date') }}">
+        </div>
+
+        <div class="col-md-3">
+            <label class="form-label">Shift</label>
+            <select name="shift" class="form-control">
+                <option value="">Semua Shift</option>
+                <option value="Shift 1" {{ request('shift')=='Shift 1'?'selected':'' }}>Shift 1</option>
+                <option value="Shift 2" {{ request('shift')=='Shift 2'?'selected':'' }}>Shift 2</option>
+                <option value="Shift 3" {{ request('shift')=='Shift 3'?'selected':'' }}>Shift 3</option>
+            </select>
+        </div>
+
+        <div class="col-md-12 d-flex gap-2">
+            <button class="btn btn-primary">Terapkan Filter</button>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-outline-secondary">
+                Reset
+            </a>
+        </div>
+
+    </form>
+
+
+
     {{-- CHART + TABLE --}}
     <div class="row g-4">
 
@@ -68,24 +107,89 @@
                                 <th>Line</th>
                                 <th>Chargis</th>
                                 <th>Shift</th>
-                                <th width="120">Aksi</th>
+                                <th width="120">
+                                    @if (auth()->user()->role === 'admin')Aksi
+                                    @endif</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($getbarang->take(5) as $item)
+                            @foreach ($getbarang as $item)
+                            <tr>
+                                <td>{{ $getbarang->firstItem() + $loop->index }}</td>
+                                <td>{{ $item->no_barang }}</td>
+                                <td>{{ $item->line_code }}</td>
+                                <td>{{ $item->chargis_from }} - {{ $item->chargis_to }}</td>
+                                <td>
+                                    <span class="badge bg-secondary">{{ $item->shift }}</span>
+                                </td>
+                                <td class="text-center">
+                                    @if (auth()->user()->role === 'admin')
+
+                                        {{-- EDIT --}}
+                                        <a href="{{ route('admin.dashboard.edit', $item->id) }}"
+                                        class="btn btn-sm btn-outline-warning me-1"
+                                        title="Edit">
+                                            <i class="bx bx-pencil"></i>
+                                        </a>
+
+                                        {{-- HAPUS --}}
+                                        <form action="{{ route('admin.dashboard.destroy', $item->id) }}"
+                                            method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger"
+                                                    title="Hapus"
+                                                    onclick="return confirm('Hapus data?')">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </form>
+
+                                    @endif
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                        <small class="text-muted">
+                            Menampilkan {{ $getbarang->firstItem() }} –
+                            {{ $getbarang->lastItem() }}
+                            dari {{ $getbarang->total() }} data
+                        </small>
+
+                       {{-- {{ $getbarang->links('pagination::bootstrap-5') }}--}}
+                        {{ $getbarang->appends(request()->query())->links('pagination::bootstrap-5') }}
+
+                    </div>
+            </div>
+        </div>
+
+        {{-- Data Requests --}}
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header fw-semibold">Data Requests</div>
+                <div class="card-body">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>No</th>
+                                <th>No Barang</th>
+                                <th>Line</th>
+                                <th>Chargis</th>
+                                <th>Shift</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($getbarang as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->no_barang }}</td>
                                 <td>{{ $item->line_code }}</td>
                                 <td>{{ $item->chargis_from }} - {{ $item->chargis_to }}</td>
                                 <td><span class="badge bg-secondary">{{ $item->shift }}</span></td>
-                                <td>
-                                    <a href="{{ route('admin.dashboard.edit',$item->id) }}" class="btn btn-sm btn-warning">Edit</a>
-                                    <form action="{{ route('admin.dashboard.destroy',$item->id) }}" method="POST" class="d-inline">
-                                        @csrf @method('DELETE')
-                                        <button class="btn btn-sm btn-danger" onclick="return confirm('Hapus data?')">Hapus</button>
-                                    </form>
-                                </td>
                             </tr>
                             @endforeach
                         </tbody>
@@ -105,7 +209,7 @@
         data: {
             labels: ['Shift 1', 'Shift 2', 'Shift 3'],
             datasets: [{
-                label: 'Jumlah Produksi',
+                label: 'Jumlah Penyusunan',
                 data: [{{ $totalshift1 }}, {{ $totalshift2 }}, {{ $totalshift3 }}],
                 backgroundColor: [
                     'rgba(54, 162, 235, 0.7)',

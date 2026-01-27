@@ -23,7 +23,7 @@ Route::get('/', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-Route::middleware(['auth', 'role:admin,user'])->group(function () {
+Route::middleware(['auth', 'role:admin,operator'])->group(function () {
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
 Route::get('/dashboard/create', [DashboardController::class, 'create'])->name('admin.dashboard.create');
@@ -38,4 +38,8 @@ Route::post('/users', [UserController::class, 'store'])->name('users.store');
 Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
 Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
 Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+
+//profile
+Route::get('/profile', [App\Http\Controllers\ProfileController::class, 'index'])->name('profile.index');
+Route::post('/profile', [App\Http\Controllers\ProfileController::class, 'update'])->name('profile.update');
 });

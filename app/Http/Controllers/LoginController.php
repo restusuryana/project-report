@@ -29,11 +29,29 @@ class LoginController extends Controller
     {
         $credentials = $request->only('email', 'password');
 
+        // Validasi data
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        //cek apakah email dan password sesuai
         if (Auth::attempt($credentials)) {
-            $user = Auth::user();
+            $request->session()->regenerate();
+            return redirect()->intended('dashboard');
+        }
+
+        // Authentication failed
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ]);
         
+
+        /**if (Auth::attempt($credentials)) {
+            $user = Auth::user();
+
             // Cek role dan redirect sesuai role
-           if ($user->role == 'admin' || $user->role == 'user') {
+           if ($user->role == 'admin' || $user->role == 'operator') {
                 Alert::success('Login Successful', 'Welcome back!');
                 return redirect()->route('admin.dashboard');
             } else {
@@ -48,6 +66,7 @@ class LoginController extends Controller
         // Authentication failed
         Alert::error('Login Failed', 'The provided credentials do not match our records.');
         return back();
+        */
     }
 
 

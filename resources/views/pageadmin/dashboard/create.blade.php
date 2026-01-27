@@ -36,11 +36,20 @@
                         {{-- LINE CODE --}}
                         <div class="col-md-6">
                             <label class="form-label">Line Code</label>
-                            <input type="text"
-                                   class="form-control @error('line_code') is-invalid @enderror"
-                                   name="line_code"
-                                   value="{{ old('line_code') }}"
-                                   placeholder="Contoh: LINE-A">
+                            <select name="line_code"
+                                    class="form-control @error('line_code') is-invalid @enderror">
+                                <option value="">-- Pilih Line --</option>
+                                <option value="A" {{ old('line_code') == 'A' ? 'selected' : '' }}>A</option>
+                                <option value="B" {{ old('line_code') == 'B' ? 'selected' : '' }}>B</option>
+                                <option value="C" {{ old('line_code') == 'C' ? 'selected' : '' }}>C</option>
+                                <option value="D1" {{ old('line_code') == 'D1' ? 'selected' : '' }}>D1</option>
+                                <option value="E" {{ old('line_code') == 'E' ? 'selected' : '' }}>E</option>
+                                <option value="F1" {{ old('line_code') == 'F1' ? 'selected' : '' }}>F1</option>
+                                <option value="G1" {{ old('line_code') == 'G1' ? 'selected' : '' }}>G1</option>
+                                <option value="H1" {{ old('line_code') == 'H1' ? 'selected' : '' }}>H1</option>
+                                <option value="I" {{ old('line_code') == 'I' ? 'selected' : '' }}>I</option>
+                            </select>
+
                             @error('line_code')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

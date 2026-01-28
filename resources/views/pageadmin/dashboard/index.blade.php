@@ -123,11 +123,19 @@
                                     <span class="badge bg-secondary">{{ $item->shift }}</span>
                                 </td>
                                 <td class="text-center">
+                                    <div class="d-flex justify-content-center align-items-center gap-1">
+
+                                    {{-- DETAIL --}}
+                                    <a href="{{ route('admin.dashboard.detail', $item->id) }}"
+                                    class="btn btn-sm btn-outline-info px-2"
+                                    title="Detail">
+                                        <i class="bx bx-show"></i>
+                                    </a>
                                     @if (auth()->user()->role === 'admin')
 
                                         {{-- EDIT --}}
                                         <a href="{{ route('admin.dashboard.edit', $item->id) }}"
-                                        class="btn btn-sm btn-outline-warning me-1"
+                                        class="btn btn-sm btn-outline-warning px-2"
                                         title="Edit">
                                             <i class="bx bx-pencil"></i>
                                         </a>
@@ -135,18 +143,17 @@
                                         {{-- HAPUS --}}
                                         <form action="{{ route('admin.dashboard.destroy', $item->id) }}"
                                             method="POST"
-                                            class="d-inline">
+                                            onsubmit="return confirm('Hapus data?')">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit"
-                                                    class="btn btn-sm btn-outline-danger"
-                                                    title="Hapus"
-                                                    onclick="return confirm('Hapus data?')">
+                                                    class="btn btn-sm btn-outline-danger px-2"
+                                                    title="Hapus">
                                                 <i class="bx bx-trash"></i>
                                             </button>
                                         </form>
-
                                     @endif
+                                    </div>
                                 </td>
                             </tr>
                             @endforeach

@@ -31,6 +31,7 @@ Route::post('/dashboard', [DashboardController::class, 'store'])->name('admin.da
 Route::get('/dashboard/{id}/edit', [DashboardController::class, 'edit'])->name('admin.dashboard.edit');
 Route::put('/dashboard/{id}', [DashboardController::class, 'update'])->name('admin.dashboard.update');
 Route::delete('/dashboard/{id}', [DashboardController::class, 'destroy'])->name('admin.dashboard.destroy');
+Route::get('/dashboard/{id}', [DashboardController::class, 'detail'])->name('admin.dashboard.detail');
 
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/create', [UserController::class, 'create'])->name('users.create');

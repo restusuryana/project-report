@@ -8,6 +8,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 use App\Helpers\ShiftHelper;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -134,7 +135,8 @@ class DashboardController extends Controller
             'chargis_from' => $request->chargis_from,
             'chargis_to'   => $request->chargis_to,
             'shift'        => ShiftHelper::getShift(),
-            'info'         => $request->info
+            'info'         => $request->info,
+            'user_id'     => auth()->user()->id,
         ]);
 
         Alert::success('Success', 'Data berhasil disimpan');
@@ -190,5 +192,11 @@ class DashboardController extends Controller
         Barang::findOrFail($id)->delete();
         Alert::success('Success', 'Data berhasil dihapus');
         return redirect()->route('admin.dashboard');
+    }
+
+    public function detail($id){
+        $barang = Barang::findOrFail($id);
+        return view('pageadmin.dashboard.detail', compact('barang'));
+
     }
 }

@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Barang extends Model
 {
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
     use HasFactory; 
     protected $fillable = [
         'no_barang',
@@ -15,5 +20,6 @@ class Barang extends Model
         'chargis_to',
         'shift',
         'info',
+        'user_id'
     ];
 }

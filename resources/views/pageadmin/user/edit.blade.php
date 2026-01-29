@@ -9,7 +9,7 @@
         <small class="text-muted">Perbarui data pengguna sistem</small>
     </div>
 
-    <div class="row justify-content-center">
+    <div class="row justify-content-left">
         <div class="col-xl-8">
 
             <div class="card">

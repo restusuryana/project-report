@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Helpers;
 
 use Carbon\Carbon;
@@ -7,14 +8,28 @@ class ShiftHelper
 {
     public static function getShift()
     {
-        $time = Carbon::now()->format('H:i');
+        $hour = Carbon::now()->hour;
 
-        if ($time >= '07:00' && $time <= '15:00') {
+        if ($hour >= 7 && $hour < 15) {
             return 'Shift 1';
-        } elseif ($time >= '15:01' && $time <= '23:00') {
-            return 'Shift 2';
-        } else {
-            return 'Shift 3';
         }
+
+        if ($hour >= 15 && $hour < 23) {
+            return 'Shift 2';
+        }
+
+        return 'Shift 3'; // 23:00 – 06:59
+    }
+
+    public static function getTanggalSusun()
+    {
+        $now = Carbon::now();
+
+        // Shift 3 (00:00 – 06:59) → hari sebelumnya
+        if ($now->hour < 7) {
+            return $now->subDay()->toDateString();
+        }
+
+        return $now->toDateString();
     }
 }

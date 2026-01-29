@@ -5,6 +5,7 @@
     <title>Dashboard | Report Penyusunan</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+
     {{-- CORE CSS --}}
     <link href="{{ asset('admin') }}/assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="{{ asset('admin') }}/assets/css/bootstrap-extended.css" rel="stylesheet">
@@ -34,8 +35,9 @@
             position: fixed;
             top: 0;
             bottom: 0;
-            left: 0;
+            left: -260px;
             z-index: 1000;
+            transition: left .3s ease;
         }
 
         .sidebar-header {
@@ -56,6 +58,10 @@
 			font-size: 12px;
 			opacity: .7;
 
+        }
+
+        .sidebar-wrapper.show {
+            left: 0;
         }
 
         .metismenu a {
@@ -87,6 +93,9 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            left: 0;
+            padding-left: 16px;
+            padding-right: 16px;
         }
 
         .user-box {
@@ -135,9 +144,83 @@
         }
 
 		.chart-wrapper {
-			height: 200px; /* WAJIB */
+			height: 280px; /* WAJIB */
 			position: relative;
+            width: 100%;
 		}
+
+        /* Desktop */
+        @media (min-width: 992px) {
+            .sidebar-wrapper {
+                left: 0;
+            }
+        }
+
+        /* ============================= */
+    /* RESPONSIVE (MOBILE & TABLET) */
+    /* ============================= */
+    @media (max-width: 991px) {
+
+
+        /* TOPBAR */
+        .topbar {
+            left: 0;
+            padding-left: 16px;
+            padding-right: 16px;
+        }
+
+        /* CONTENT */
+        .page-content {
+            margin-left: 0;
+            padding: 88px 16px 24px;
+        }
+    }
+
+    /* HP KECIL */
+    @media (max-width: 576px) {
+        .page-content {
+            padding: 80px 12px 20px;
+        }
+
+        .user-info {
+            display: none; /* sembunyikan nama biar muat */
+        }
+    }
+
+    /*shift.list*/
+            .shift-list {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .shift-item {
+            display: grid;
+            grid-template-columns: 30px 80px auto;
+            gap: 6px;
+            font-size: 13px;
+            padding: 4px 6px;
+            border-bottom: 1px dashed #e5e7eb;
+        }
+
+        .shift-item:last-child {
+            border-bottom: none;
+        }
+
+        .shift-item .line {
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .shift-item .barang {
+            font-family: monospace;
+        }
+
+        .shift-item .chargis {
+            text-align: right;
+            color: #64748b;
+        }
+
 
     </style>
 </head>
@@ -156,7 +239,12 @@
 
 {{-- HEADER --}}
 <div class="topbar">
-    <div class="topbar-left"></div>
+    <div class="topbar-left d-flex align-items-center">
+        <button class="btn btn-light d-lg-none me-2"
+                onclick="toggleSidebar()">
+            <i class="bx bx-menu"></i>
+        </button>
+    </div>
 
     <div class="dropdown">
         <a href="#"
@@ -207,6 +295,28 @@
 <script src="{{ asset('admin') }}/assets/plugins/simplebar/js/simplebar.min.js"></script>
 <script src="{{ asset('admin') }}/assets/js/app.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const sidebar = document.querySelector('.sidebar-wrapper');
+const burger  = document.querySelector('.bx-menu').parentElement;
+
+function toggleSidebar() {
+    sidebar.classList.toggle('show');
+}
+
+// KLIK DI LUAR SIDEBAR → TUTUP
+document.addEventListener('click', function (e) {
+
+    // kalau sidebar ga kebuka, skip
+    if (!sidebar.classList.contains('show')) return;
+
+    // kalau klik di sidebar ATAU di burger, jangan tutup
+    if (sidebar.contains(e.target) || burger.contains(e.target)) return;
+
+    // selain itu → tutup sidebar
+    sidebar.classList.remove('show');
+});
+</script>
+
 @yield('script')
 
 

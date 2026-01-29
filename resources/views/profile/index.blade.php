@@ -2,15 +2,20 @@
 
 @section('content')
 
-<div class="page-wrapper">
-    <div class="container-fluid">
+<div class="container-fluid">
 
-        <h4 class="mb-3">Profil Saya</h4>
+    {{-- HEADER --}}
+        <div class="mb-4">
+            <h4 class="fw-bold mb-0">Profile Pengguna</h4>
+            <small class="text-muted">Profile data pengguna sistem</small>
+        </div>
 
         @if(session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        <div class="row justify-content-left">
+        <div class="col-xl-8">
         <div class="card">
             <div class="card-body">
 
@@ -60,7 +65,8 @@
 
             </div>
         </div>
+        </div>
+        </div>
 
-    </div>
 </div>
 @endsection

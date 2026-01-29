@@ -20,6 +20,7 @@ class Barang extends Model
         'chargis_to',
         'shift',
         'info',
-        'user_id'
+        'user_id',
+        'tanggal_susun',
     ];
 }

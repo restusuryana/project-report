@@ -17,6 +17,7 @@ class DashboardController extends Controller
         $startDate = $request->start_date;
         $endDate   = $request->end_date;
         $shift     = $request->shift;
+        $tanggalHarian = $request->tanggal_harian;
 
         // MINGGU BERJALAN (DEFAULT)
         $startOfWeek = Carbon::now()->startOfWeek(Carbon::MONDAY);
@@ -41,11 +42,11 @@ class DashboardController extends Controller
                 ]);
             }
 
-            $baseQuery->whereBetween('created_at', [$from, $to]);
+            $baseQuery->whereBetween('tanggal_susun', [$from, $to]);
 
         } else {
             // DEFAULT: minggu berjalan
-            $baseQuery->whereBetween('created_at', [$startOfWeek, $endOfWeek]);
+            $baseQuery->whereBetween('tanggal_susun', [$startOfWeek, $endOfWeek]);
         }
 
         // FILTER SHIFT
@@ -61,7 +62,8 @@ class DashboardController extends Controller
          */
         $getbarang = (clone $baseQuery)
             ->orderBy('created_at', 'desc')
-            ->paginate(5);
+            ->paginate(9);
+
 
         /**
          * ==========================
@@ -82,12 +84,34 @@ class DashboardController extends Controller
 
         $totalAll = $totalshift1 + $totalshift2 + $totalshift3;
 
+        //data pershift total
+        // DATA PER SHIFT (BERDASARKAN INPUT)
+        
+        $dataShift1 = Barang::where('shift', 'shift 1')
+            ->whereDate('tanggal_susun', $tanggalHarian)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $dataShift2 = Barang::where('shift', 'shift 2')
+            ->whereDate('tanggal_susun', $tanggalHarian)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $dataShift3 = Barang::where('shift', 'shift 3')
+            ->whereDate('tanggal_susun', $tanggalHarian)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
         return view('pageadmin.dashboard.index', compact(
             'getbarang',
             'totalshift1',
             'totalshift2',
             'totalshift3',
-            'totalAll'
+            'totalAll',
+            'dataShift1',
+            'dataShift2',
+            'dataShift3',
+            
         ));
     }
 
@@ -135,8 +159,10 @@ class DashboardController extends Controller
             'chargis_from' => $request->chargis_from,
             'chargis_to'   => $request->chargis_to,
             'shift'        => ShiftHelper::getShift(),
+            'tanggal_susun'=> ShiftHelper::getTanggalSusun(),
             'info'         => $request->info,
             'user_id'     => auth()->user()->id,
+
         ]);
 
         Alert::success('Success', 'Data berhasil disimpan');
@@ -162,7 +188,7 @@ class DashboardController extends Controller
         $barang = Barang::findOrFail($id);
 
         $exists = Barang::where('no_barang', $request->no_barang)
-            ->where('id', '!=', $id) // ⬅️ PENTING
+            ->where('id', '!=', $id) // 
             ->where(function ($q) use ($request) {
                 $q->where('chargis_from', '<=', $request->chargis_to)
                 ->where('chargis_to', '>=', $request->chargis_from);

@@ -15,7 +15,7 @@
                     <div class="row">
                         <div class="col-6">
                             <h5 class="fw-semibold">Tanggal Penyusunan:</h5>
-                            <p>{{ \Carbon\Carbon::parse($barang->tanggal_penyusunan)->format('d M Y') }}</p>
+                            <p>{{ \Carbon\Carbon::parse($barang->tanggal_susun)->format('d M Y') }}</p>
                         </div>
                         <div class="col-6">
                             <h5 class="fw-semibold">No Barang:</h5>

@@ -83,7 +83,7 @@
         <div class="col-lg-6">
             <div class="card h-100">
                 <div class="card-header fw-semibold">Grafik Penyusunan Per Shift</div>
-                <div class="card-body">
+                <div class="card-body p-0">
                     <canvas id="shiftChart"></canvas>
                 </div>
             </div>
@@ -98,9 +98,9 @@
                         + Tambah Data
                     </a>
                 </div>
-                <div class="card-body p-0">
-                    <table class="table table-hover mb-0">
-                        <thead class="table-light">
+                <div class="card-body p-0 table-responsive">
+                    <table class="table table-sm align-middle">
+                        <thead class="table-light text-center">
                             <tr>
                                 <th>No</th>
                                 <th>No Barang</th>
@@ -112,7 +112,7 @@
                                     @endif</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-center">
                             @foreach ($getbarang as $item)
                             <tr>
                                 <td>{{ $getbarang->firstItem() + $loop->index }}</td>
@@ -122,7 +122,7 @@
                                 <td>
                                     <span class="badge bg-secondary">{{ $item->shift }}</span>
                                 </td>
-                                <td class="text-center">
+                                 <td class="text-center">
                                     <div class="d-flex justify-content-center align-items-center gap-1">
 
                                     {{-- DETAIL --}}
@@ -180,7 +180,7 @@
                 <div class="card-header fw-semibold">Data Requests</div>
                 <div class="card-body">
                     <table class="table table-hover mb-0">
-                        <thead class="table-light">
+                        <thead class="table-light text-center">
                             <tr>
                                 <th>No</th>
                                 <th>No Barang</th>
@@ -189,7 +189,7 @@
                                 <th>Shift</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody class="text-center">
                             @foreach($getbarang as $item)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -204,7 +204,87 @@
                 </div>
             </div>
         </div>
+        {{-- Total data pershift --}}
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header fw-semibold">Shortir Data Per Shift Per Hari</div>
 
+                <form method="GET" action="{{ route('admin.dashboard') }}" class="row g-1 mb-0.5 p-3">
+                    <div class="col-md-3">
+                        <input type="date"
+                            name="tanggal_harian"
+                            class="form-control"
+                            value="{{ request('tanggal_harian')}}">
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">
+                            Tampilkan
+                        </button>
+                    </div>
+                </form>
+
+                <div class="card-body">
+                    <table class="table table-hover mb-0">
+                        <thead class="table-light text-center">
+                            <tr>
+                                <th>Shift 1</th>
+                                <th>Shift 2</th>
+                                <th>Shift 3</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <tr>
+                                {{-- SHIFT 1 --}}
+                                <td class="align-top">
+                                    <ul class="list-unstyled m-0 shift-list">
+                                        @forelse ($dataShift1 as $item)
+                                            <li class="shift-item">
+                                                <span class="line">{{ $item->line_code }}</span>
+                                                <span class="barang">{{ $item->no_barang }}</span>
+                                                <span class="chargis">{{ $item->chargis_from }}–{{ $item->chargis_to }}</span>
+                                            </li>
+                                        @empty
+                                            <li class="text-muted small">Tidak ada data</li>
+                                        @endforelse
+                                    </ul>
+                                </td>
+
+
+                                {{-- SHIFT 2 --}}
+                                <td class="align-top">
+                                    <ul class="list-unstyled m-0 shift-list">
+                                        @forelse ($dataShift2 as $item)
+                                            <li class="shift-item">
+                                                <span class="line">{{ $item->line_code }}</span>
+                                                <span class="barang">{{ $item->no_barang }}</span>
+                                                <span class="chargis">{{ $item->chargis_from }}–{{ $item->chargis_to }}</span>
+                                            </li>
+                                        @empty
+                                            <li class="text-muted small">Tidak ada data</li>
+                                        @endforelse
+                                    </ul>
+                                </td>
+
+                                {{-- SHIFT 3 --}}
+                                <td class="align-top">
+                                    <ul class="list-unstyled m-0 shift-list">
+                                        @forelse ($dataShift3 as $item)
+                                            <li class="shift-item">
+                                                <span class="line">{{ $item->line_code }}</span>
+                                                <span class="barang">{{ $item->no_barang }}</span>
+                                                <span class="chargis">{{ $item->chargis_from }}–{{ $item->chargis_to }}</span>
+                                            </li>
+                                        @empty
+                                            <li class="text-muted small">Tidak ada data</li>
+                                        @endforelse
+                                    </ul>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 @section('script')
@@ -228,10 +308,12 @@
                     'rgba(75, 192, 192, 1)',
                     'rgba(255, 206, 86, 1)'
                 ],
+                
                 borderWidth: 1
             }]
         },
         options: {
+    
             scales: {
                 y: {
                     beginAtZero: true,
@@ -240,6 +322,7 @@
                     }
                 }
             }
+            
         }
     });
 </script>

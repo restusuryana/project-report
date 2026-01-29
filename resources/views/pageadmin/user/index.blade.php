@@ -14,9 +14,9 @@
     </div>
 
     <div class="card">
-        <div class="card-body">
+        <div class="card-body table-responsive">
             <table class="table table-hover">
-                <thead class="table-light">
+                <thead class="table-light text-center">
                     <tr>
                         <th>No</th>
                         <th>Nama</th>
@@ -25,7 +25,7 @@
                         <th width="150">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-center">
                     @foreach($users as $user)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
